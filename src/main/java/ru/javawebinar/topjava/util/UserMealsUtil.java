@@ -56,7 +56,7 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByCycle(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        CaloriesPerDayUtil mealsCalories = new CaloriesPerDayUtil(caloriesPerDay);
+        CaloriesPerDayHolder mealsCalories = new CaloriesPerDayHolder(caloriesPerDay);
         List<UserMealWithExcess> filteredList = new ArrayList<>();
         for (UserMeal meal : meals) {
             mealsCalories.addCalories(meal.getDateTime().toLocalDate(), meal.getCalories());

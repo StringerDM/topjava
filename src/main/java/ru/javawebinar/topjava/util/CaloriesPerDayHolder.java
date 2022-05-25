@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CaloriesPerDayUtil {
+public class CaloriesPerDayHolder {
     private final int caloriesPerDay;
     private final Map<LocalDate, Integer> caloriesPerDayMap = new HashMap<>();
 
-    public CaloriesPerDayUtil(int caloriesPerDay) {
+    public CaloriesPerDayHolder(int caloriesPerDay) {
         this.caloriesPerDay = caloriesPerDay;
     }
 
