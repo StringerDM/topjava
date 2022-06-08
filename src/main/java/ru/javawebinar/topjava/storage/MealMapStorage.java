@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class MealStorage implements Storage {
+public class MealMapStorage implements Storage {
     private final Map<Integer, Meal> storage = new ConcurrentHashMap<>();
-    private final AtomicInteger count = new AtomicInteger(0);
+    private Integer count = 0;
 
     @Override
-    public void save(Meal meal) {
-        storage.put(count.incrementAndGet(), meal);
-        meal.setId(count.intValue());
+    public synchronized void create(Meal meal) {
+        storage.put(count, meal);
+        meal.setId(count);
+        count++;
     }
 
     @Override
@@ -25,7 +25,11 @@ public class MealStorage implements Storage {
 
     @Override
     public void update(Meal meal) {
-        storage.put(meal.getId(), meal);
+        if (!storage.containsKey(meal.getId())) {
+            storage.put(meal.getId(), meal);
+        } else {
+            System.out.println("Error: meal id " + meal.getId() + " is not exist");
+        }
     }
 
     @Override
@@ -33,6 +37,7 @@ public class MealStorage implements Storage {
         storage.remove(id);
     }
 
+    @Override
     public List<Meal> getAll() {
         return new ArrayList<>(storage.values());
     }

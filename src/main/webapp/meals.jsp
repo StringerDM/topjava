@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: d.medvedev
-  Date: 03.06.2022
-  Time: 8:06
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -35,17 +28,16 @@
         <th></th>
         <th></th>
     </tr>
-    <%--@elvariable id="mealsTo" type="java.util.List"--%>
     <c:forEach items="${mealsTo}" var="mealTo">
         <tr style="color:${mealTo.excess ? 'green' : 'red'}">
             <td>${mealTo.date} ${mealTo.time}</td>
             <td>${mealTo.description}</td>
             <td>${mealTo.calories}</td>
             <td>
-                <a href="meals?action=edit&id=<c:out value="${mealTo.id}"/>">Update</a>
+                <a href="meals?action=update&id=${mealTo.id}">Update</a>
             </td>
             <td>
-                <a href="meals?action=delete&id=<c:out value="${mealTo.id}"/>">Delete</a>
+                <a href="meals?action=delete&id=${mealTo.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
