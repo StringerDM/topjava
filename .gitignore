@@ -1,6 +1,7 @@
 .idea
 out
 target
+path_arhive
 *.iml
 log
 *.patch
