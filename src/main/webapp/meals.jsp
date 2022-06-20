@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
-<%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
     <title>Meal list</title>
@@ -21,19 +20,19 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
-    <form method="post" action="meals">
-        <input type="hidden" name="formType" value="filter">
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
         Start Date: <label>
-        <input type="date" value="" name="startDate">
+        <input type="date" value="${param.startDate}" name="startDate">
     </label>
         End Date: <label>
-        <input type="date" value="" name="endDate">
+        <input type="date" value="${param.endDate}" name="endDate">
     </label>
         Start Time: <label>
-        <input type="time" value="" name="startTime">
+        <input type="time" value="${param.startTime}" name="startTime">
     </label>
         End Time: <label>
-        <input type="time" value="" name="endTime">
+        <input type="time" value="${param.endTime}" name="endTime">
     </label>
         <dl>
             <button type="submit">Filter</button>

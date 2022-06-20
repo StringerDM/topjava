@@ -31,18 +31,13 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
+        Map<Integer, Meal> meals = repository.computeIfAbsent(userId, uid -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            Map<Integer, Meal> meals = new ConcurrentHashMap<>();
             meals.put(meal.getId(), meal);
-            repository.merge(userId, new ConcurrentHashMap<>(meals), (m1, m2) -> {
-                m1.putAll(m2);
-                return m1;
-            });
             return meal;
         }
-        Map<Integer, Meal> meals = repository.get(userId);
-        return meals != null ? meals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal) : null;
+        return meals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
@@ -64,7 +59,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAllFilteredByDate(int userId, LocalDateTime start, LocalDateTime end) {
+    public List<Meal> getBetweenHalfOpen(int userId, LocalDateTime start, LocalDateTime end) {
         return filterByPredicate(userId, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), start, end));
     }
 

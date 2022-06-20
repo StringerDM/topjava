@@ -2,19 +2,16 @@ package ru.javawebinar.topjava.web.meal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.util.Filter;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
@@ -25,19 +22,10 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 public class MealRestController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final Map<Integer, Filter> filterMap = new ConcurrentHashMap<>();
     private final MealService service;
 
     public MealRestController(MealService service) {
         this.service = service;
-    }
-
-    public Filter getFilter() {
-        return filterMap.get(authUserId());
-    }
-
-    public void setFilter(Filter filter) {
-        filterMap.put(authUserId(), filter);
     }
 
     public Meal get(int id) {
@@ -63,18 +51,17 @@ public class MealRestController {
     }
 
     public List<MealTo> getAll() {
-        return MealsUtil.getTos(service.getAll(authUserId()), authUserCaloriesPerDay());
+        int userId = authUserId();
+        log.info("getAll for user {}", userId);
+        return MealsUtil.getTos(service.getAll(userId), authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getAllFiltered(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        startDate = startDate == null ? LocalDate.MIN : startDate;
-        endDate = endDate == null ? LocalDate.MAX : endDate;
-        startTime = startTime == null ? LocalTime.MIN : startTime;
-        endTime = endTime == null ? LocalTime.MAX : endTime;
+    public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
+                                   @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+        int userId = authUserId();
+        log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
-        LocalDateTime start = LocalDateTime.of(startDate, LocalTime.MIN);
-        LocalDateTime end = LocalDateTime.of(endDate, LocalTime.MAX);
-        return MealsUtil.getFilteredTos(service.getAllFilteredByDate(authUserId(), start, end),
-                authUserCaloriesPerDay(), startTime, endTime);
+        List<Meal> mealDateFiltered = service.getAllFilteredByDate(userId, startDate, endDate);
+        return MealsUtil.getFilteredTos(mealDateFiltered, authUserCaloriesPerDay(), startTime, endTime);
     }
 }

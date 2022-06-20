@@ -14,5 +14,5 @@ public interface MealRepository {
 
     List<Meal> getAll(int userId);
 
-    List<Meal> getAllFilteredByDate(int userId, LocalDateTime start, LocalDateTime end);
+    List<Meal> getBetweenHalfOpen(int userId, LocalDateTime start, LocalDateTime end);
 }
