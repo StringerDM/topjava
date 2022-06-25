@@ -20,7 +20,7 @@ CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 CREATE TABLE user_roles
 (
     user_id INTEGER NOT NULL,
-    role    VARCHAR,
+    role    VARCHAR NOT NULL,
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
@@ -29,8 +29,8 @@ CREATE TABLE meals
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     date_time       TIMESTAMP                           NOT NULL,
-    description     VARCHAR                             NOT NULL,
-    calories        INTEGER                             NOT NULL,
+    description     TEXT                             NOT NULL,
+    calories        INT                             NOT NULL,
     user_id         INTEGER                             NOT NULL,
     CONSTRAINT meals_unique_user_id_date_time_idx UNIQUE (user_id, date_time),
     FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE RESTRICT ON DELETE CASCADE
