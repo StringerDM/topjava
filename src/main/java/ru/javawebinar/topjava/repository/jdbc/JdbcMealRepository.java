@@ -40,12 +40,11 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
+                .addValue("date_time", getDateArg(meal.getDateTime()))
+                .addValue("id", meal.getId())
                 .addValue("user_id", userId);
-
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
@@ -81,12 +80,11 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
     @Profile(Profiles.POSTGRES_DB)
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        T[] t = getDateArgs(startDateTime, endDateTime);
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time >=? AND date_time<? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, t[0], t[1]);
+                ROW_MAPPER, userId, getDateArg(startDateTime), getDateArg(endDateTime));
     }
 
-    abstract T[] getDateArgs(LocalDateTime startDateTime, LocalDateTime endDateTime);
+    abstract T getDateArg(LocalDateTime localDateTime);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.Profiles;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Repository
 @Profile(Profiles.POSTGRES_DB)
@@ -17,7 +18,7 @@ public class PostgresJdbcMealRepository extends JdbcMealRepository<LocalDateTime
     }
 
     @Override
-    LocalDateTime[] getDateArgs(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return new LocalDateTime[]{startDateTime, endDateTime};
+    LocalDateTime getDateArg(LocalDateTime localDateTime) {
+        return localDateTime;
     }
 }
