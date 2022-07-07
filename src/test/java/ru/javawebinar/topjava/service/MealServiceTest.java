@@ -18,7 +18,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 public abstract class MealServiceTest extends AbstractServiceTest {
 
-
     @Autowired
     private MealService service;
 
