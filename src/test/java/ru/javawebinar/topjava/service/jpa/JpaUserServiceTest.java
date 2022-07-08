@@ -1,9 +1,10 @@
 package ru.javawebinar.topjava.service.jpa;
 
 import org.springframework.test.context.ActiveProfiles;
-import ru.javawebinar.topjava.Profiles;
-import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.service.AbstractUserServiceTest;
 
-@ActiveProfiles(Profiles.JPA)
-public class JpaUserServiceTest extends UserServiceTest {
+import static ru.javawebinar.topjava.Profiles.JPA;
+
+@ActiveProfiles(JPA)
+public class JpaUserServiceTest extends AbstractUserServiceTest {
 }
