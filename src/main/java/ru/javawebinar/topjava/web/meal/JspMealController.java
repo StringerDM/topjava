@@ -27,7 +27,7 @@ public class JspMealController extends MealController {
     }
 
     @GetMapping()
-    public String getMeals(Model model) {
+    public String getAll(Model model) {
         model.addAttribute("meals", getAll());
         return "meals";
     }
