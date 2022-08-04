@@ -1,4 +1,4 @@
-const mealsAjaxUrl = "meals";
+const mealsAjaxUrl = "meals/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
@@ -13,7 +13,7 @@ $(function () {
             "info": true,
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": "datetime"
                 },
                 {
                     "data": "description"
@@ -31,10 +31,7 @@ $(function () {
                 }
             ],
             "order": [
-                [
-                    0,
-                    "asc"
-                ]
+                []
             ]
         })
     );
