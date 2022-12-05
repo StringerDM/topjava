@@ -23,7 +23,7 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            value = key === 'dateTime' ? value.replace("T", " ").substring(0, 16) : value;
+            value = key === 'dateTime' ? getDateTimeWithoutT(value) : value;
             form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
@@ -99,3 +99,6 @@ function failNoty(jqXHR) {
     failedNote.show()
 }
 
+function getDateTimeWithoutT(date) {
+    return date.replace("T", " ").substring(0, 16);
+}

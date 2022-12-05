@@ -31,7 +31,7 @@ $(function () {
                     "data": "dateTime",
                     "render": function (date, type, raw) {
                         if (type === "display") {
-                            return date.replace("T", " ").substring(0, 16);
+                            return getDateTimeWithoutT(date);
                         }
                         return date;
                     }
